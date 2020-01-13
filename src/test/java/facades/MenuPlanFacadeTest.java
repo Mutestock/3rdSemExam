@@ -24,9 +24,9 @@ import utils.EMF_Creator;
 //Normally I'd use the NamedQueries for this.
 public class MenuPlanFacadeTest {
 
-    private  MultiFacade<MenuPlan> MENUPLAN_FACADE;
-    private  MultiFacade<DayPlan> DAYPLAN_FACADE;
-    private  MultiFacade<Item> ITEM_FACADE;
+    private MultiFacade<MenuPlan> MENUPLAN_FACADE;
+    private MultiFacade<DayPlan> DAYPLAN_FACADE;
+    private MultiFacade<Item> ITEM_FACADE;
     private static EntityManagerFactory emf;
 
     MenuPlan menuPlan01 = new MenuPlan();
@@ -122,13 +122,28 @@ public class MenuPlanFacadeTest {
         dayPlanList.add(dayPlan02);
         menuPlan01.setDayPlanList(dayPlanList);
         MENUPLAN_FACADE.edit(menuPlan01);
-        System.out.println("Testing size retrieval: " + MENUPLAN_FACADE.findAll().size());
         Assertions.assertEquals(2, MENUPLAN_FACADE.findAll().size());
         Assertions.assertEquals(2, ((MenuPlan) MENUPLAN_FACADE.find(menuPlan01.getId())).getDayPlanList().size());
-        
+
         DAYPLAN_FACADE.remove(dayPlan01.getId());
         Assertions.assertEquals(1, DAYPLAN_FACADE.findAll().size());
 
         Assertions.assertEquals(1, ((MenuPlan) MENUPLAN_FACADE.find(menuPlan01.getId())).getDayPlanList().size());
+    }
+
+    @Test
+    public void removeUproot02() {
+        List<Item> itemList = new ArrayList<>();
+        itemList.add(item01);
+        itemList.add(item02);
+        menuPlan01.setItemList(itemList);
+        MENUPLAN_FACADE.edit(menuPlan01);
+        Assertions.assertEquals(2, MENUPLAN_FACADE.findAll().size());
+        Assertions.assertEquals(2, ((MenuPlan) MENUPLAN_FACADE.find(menuPlan01.getId())).getItemList().size());
+
+        ITEM_FACADE.remove(item01.getId());
+        Assertions.assertEquals(1, ITEM_FACADE.findAll().size());
+
+        Assertions.assertEquals(1, ((MenuPlan) MENUPLAN_FACADE.find(menuPlan01.getId())).getItemList().size());
     }
 }

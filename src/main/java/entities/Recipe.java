@@ -8,24 +8,24 @@ import java.util.List;
  */
 public class Recipe {
 
-    private Long id;
+    private String id;
     private String description;
-    private List ingredients;
-    private String prepTime;
-    private String preparations;
+    private List<String> ingredients;
+    private String prep_time;
+    private List<String> preparaion_steps;
 
-    public Recipe(String description, List ingredients, String prepTime, String preparations) {
+    public Recipe(String id, String description, List ingredients, String prep_time, List<String> preparation_steps) {
         this.description = description;
         this.ingredients = ingredients;
-        this.prepTime = prepTime;
-        this.preparations = preparations;
+        this.prep_time = prep_time;
+        this.preparaion_steps = preparation_steps;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -37,28 +37,27 @@ public class Recipe {
         this.description = description;
     }
 
-    public List getIngredients() {
+    public String getPrepTime() {
+        return prep_time;
+    }
+
+    public void setPrepTime(String prep_time) {
+        this.prep_time = prep_time;
+    }
+
+    public List<String> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List ingredients) {
+    public void setIngredients(List<String> ingredients) {
         this.ingredients = ingredients;
     }
 
-    public String getPrepTime() {
-        return prepTime;
+    public List<String> getPreparations() {
+        return preparaion_steps;
     }
 
-    public void setPrepTime(String prepTime) {
-        this.prepTime = prepTime;
+    public void setPreparations(List<String> preparation_steps) {
+        this.preparaion_steps = preparation_steps;
     }
-
-    public String getPreparations() {
-        return preparations;
-    }
-
-    public void setPreparations(String preparations) {
-        this.preparations = preparations;
-    }
-
 }

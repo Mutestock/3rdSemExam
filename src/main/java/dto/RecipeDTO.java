@@ -10,9 +10,9 @@ import java.util.List;
 public class RecipeDTO {
 
     private String description;
-    private List ingredients;   
+    private List ingredients;
     private String prepTime;
-    private String preparations;
+    private List<String> preparations;
 
     public RecipeDTO(Recipe recipe) {
         this.description = recipe.getDescription();
@@ -45,11 +45,20 @@ public class RecipeDTO {
         this.prepTime = prepTime;
     }
 
-    public String getPreparations() {
+    public String getPrepTime() {
+        return prepTime;
+    }
+
+    public void setPrepTime(String prepTime) {
+        this.prepTime = prepTime;
+    }
+
+    public List<String> getPreparations() {
         return preparations;
     }
 
-    public void setPreparations(String preparations) {
+    public void setPreparations(List<String> preparations) {
         this.preparations = preparations;
     }
+
 }
