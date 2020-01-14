@@ -19,6 +19,7 @@ import utils.EMF_Creator;
 //They take time to design correctly
 //And time is a thing I don't have a lot of.
 //Normally I'd use the NamedQueries for this.
+@Disabled
 public class DayPlanFacadeTest {
 
     private final MultiFacade<DayPlan> DAYPLAN_FACADE;

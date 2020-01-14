@@ -8,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 
@@ -19,6 +20,7 @@ import utils.EMF_Creator;
 //They take time to design correctly
 //And time is a thing I don't have a lot of.
 //Normally I'd use the NamedQueries for this.
+@Disabled
 public class ItemFacadeTest {
 
     private final MultiFacade<Item> ITEM_FACADE;
