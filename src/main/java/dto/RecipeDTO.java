@@ -1,6 +1,8 @@
 package dto;
 
 import entities.Recipe;
+import facades.RecipeFacade;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -9,12 +11,14 @@ import java.util.List;
  */
 public class RecipeDTO {
 
+    private String id;
     private String description;
     private List ingredients;
     private String prepTime;
     private List<String> preparations;
 
-    public RecipeDTO(Recipe recipe) {
+    public RecipeDTO(Recipe recipe) throws IOException {
+        this.id = recipe.getId();
         this.description = recipe.getDescription();
         this.ingredients = recipe.getIngredients();
         this.prepTime = recipe.getPrepTime();

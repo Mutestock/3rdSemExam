@@ -4,6 +4,7 @@ import entities.DayPlan;
 import entities.Recipe;
 import facades.RecipeFacade;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 /**
  *
@@ -11,13 +12,13 @@ import java.io.IOException;
  */
 public class DayPlanDTO {
 
-    //private String recipeID;
+    private String recipeID;
     private String dayOfWeek;
-    private Recipe recipe;
+    private RecipeDTO recipe;
 
-    public DayPlanDTO(DayPlan dayPlan) throws IOException {
+    public DayPlanDTO(DayPlan dayPlan) throws IOException, InterruptedException, ExecutionException {
         this.dayOfWeek = dayPlan.getDayOfWeek();
-        this.recipe = RecipeFacade.getRecipeFromID(dayPlan.getRecipeID());
+        this.recipeID = recipeID;
     }
 
     public String getDayOfWeek() {
@@ -28,11 +29,11 @@ public class DayPlanDTO {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public Recipe getRecipe() {
+    public RecipeDTO getRecipe() {
         return recipe;
     }
 
-    public void setRecipe(Recipe recipe) {
+    public void setRecipe(RecipeDTO recipe) {
         this.recipe = recipe;
     }
 }

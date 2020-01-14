@@ -1,8 +1,6 @@
 package rest;
 
-import dto.DayPlanDTO;
 import dto.ItemDTO;
-import dto.PersonDTO;
 import entities.Item;
 import entities.User;
 import facades.MultiFacade;
@@ -35,12 +33,12 @@ import utils.EMF_Creator;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "teamone-ca3",
+                title = "3rdSemExam",
                 version = "0.1",
                 description = "Backend of the CA3 project"
         ),
         tags = {
-            @Tag(name = "Star Wars resource", description = "API related to the Star Wars fetch from distant API's")
+            @Tag(name = "Item Resource", description = "API related to items")
         },
         servers = {
             @Server(
@@ -82,11 +80,11 @@ public class ItemResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
     // @RolesAllowed({"user", "admin"})
-    @Operation(summary = "Fetches data from distant Star Wars API's by id",
+    @Operation(summary = "Item by ID",
             tags = {"Item Resource"},
             responses = {
                 @ApiResponse(
-                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonDTO.class))),
+                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = ItemDTO.class))),
                 @ApiResponse(responseCode = "200", description = "The requested resources was returned"),
                 @ApiResponse(responseCode = "400", description = "The server cannot or will not process the request and no resources were returned")})
     public ItemDTO getItem(@PathParam("id") int id) throws IOException, InterruptedException, ExecutionException {
@@ -96,7 +94,7 @@ public class ItemResource {
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Fetches all Item components from hardware data",
+    @Operation(summary = "All Items",
             tags = {"Item Resource"},
             responses = {
                 @ApiResponse(
@@ -113,12 +111,12 @@ public class ItemResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("create")
-    @Operation(summary = "Creates a Item and persists it to the database",
+    //@Path("create")
+    @Operation(summary = "Item Creation",
             tags = {"Item Resource"},
             responses = {
                 @ApiResponse(
-                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = ItemDTO.class))),
                 @ApiResponse(responseCode = "200", description = "The person was created and persisted"),
                 @ApiResponse(responseCode = "400", description = "No users was created or persisted")})
     public void createItem(Item entity) {

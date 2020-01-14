@@ -1,7 +1,7 @@
 package rest;
 
 import dto.UserDTO;
-import dto.PersonDTO;
+import entities.Role;
 import entities.User;
 import facades.MultiFacade;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -33,7 +34,7 @@ import utils.EMF_Creator;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "teamone-ca3",
+                title = "3rdSemExam",
                 version = "0.1",
                 description = "Backend of the CA3 project"
         ),
@@ -56,7 +57,8 @@ import utils.EMF_Creator;
 public class UserResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
-    private static final MultiFacade<User> DAYPLAN_FACADE = new MultiFacade(User.class, EMF);
+    private static final MultiFacade<User> USER_FACADE = new MultiFacade(User.class, EMF);
+    private static final MultiFacade<Role> ROLE_FACADE = new MultiFacade(Role.class, EMF);
 
     @Context
     private UriInfo context;
@@ -68,7 +70,7 @@ public class UserResource {
     @Produces({MediaType.APPLICATION_JSON})
     //@RolesAllowed({"user", "admin"})
     @Operation(summary = "Basic API Response: User",
-            tags = {"User resource"},
+            tags = {"User Resource"},
             responses = {
                 @ApiResponse(responseCode = "200", description = "The user successfully connected"),
                 @ApiResponse(responseCode = "400", description = "The server cannot or will not process the request")})
@@ -84,25 +86,25 @@ public class UserResource {
             tags = {"User Resource"},
             responses = {
                 @ApiResponse(
-                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonDTO.class))),
+                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))),
                 @ApiResponse(responseCode = "200", description = "The requested resources was returned"),
                 @ApiResponse(responseCode = "400", description = "The server cannot or will not process the request and no resources were returned")})
     public UserDTO getUser(@PathParam("id") int id) throws IOException, InterruptedException, ExecutionException {
-        return new UserDTO(((User) DAYPLAN_FACADE.find(id)));
+        return new UserDTO(((User) USER_FACADE.find(id)));
     }
 
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Fetches all User components from hardware data",
-            tags = {"User endpoint"},
+            tags = {"User Resource"},
             responses = {
                 @ApiResponse(
                         content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))),
                 @ApiResponse(responseCode = "200", description = "The requested User resources were returned"),
                 @ApiResponse(responseCode = "400", description = "The server cannot or will not process the request and no resources were returned")})
     public List<UserDTO> getAllUsers() {
-        return (List<UserDTO>) DAYPLAN_FACADE.findAll()
+        return (List<UserDTO>) USER_FACADE.findAll()
                 .stream()
                 .map(User -> new UserDTO((User) User))
                 .collect(Collectors.toList());
@@ -116,36 +118,42 @@ public class UserResource {
             tags = {"User Resource"},
             responses = {
                 @ApiResponse(
-                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))),
                 @ApiResponse(responseCode = "200", description = "The person was created and persisted"),
                 @ApiResponse(responseCode = "400", description = "No users was created or persisted")})
     public void createUser(User entity) {
-        DAYPLAN_FACADE.create(entity);
+        System.out.println(entity);
+        entity.setRoleList(
+                Stream.of(
+                        new Role("user")
+                ).collect(Collectors.toList())
+        );
+        USER_FACADE.create(entity);
     }
 
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     // @RolesAllowed("admin")
-    @Operation(summary = "User Deletion", tags = {"User endpoint"},
+    @Operation(summary = "User Deletion", tags = {"User Resource"},
             responses = {
                 @ApiResponse(responseCode = "200", description = "User Deleted"),
                 @ApiResponse(responseCode = "400", description = "Not all arguments provided to delete")
             })
     public void deleteRest(@PathParam("id") Long id) {
-        DAYPLAN_FACADE.remove(id);
+        USER_FACADE.remove(id);
     }
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     //@RolesAllowed("admin")
-    @Operation(summary = "User Editing", tags = {"User endpoint"},
+    @Operation(summary = "User Editing", tags = {"User Resource"},
             responses = {
                 @ApiResponse(responseCode = "200", description = "User Edited"),
                 @ApiResponse(responseCode = "400", description = "Not all arguments provided with the body to edit")
             })
     public void editRest(User entity) {
-        DAYPLAN_FACADE.edit(entity);
+        USER_FACADE.edit(entity);
     }
 }

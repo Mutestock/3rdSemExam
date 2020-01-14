@@ -14,6 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.mindrot.jbcrypt.BCrypt;
@@ -47,6 +48,7 @@ public class User implements Serializable {
 
     public List<String> getRolesAsStrings() {
         if (roleList.isEmpty()) {
+            System.out.println("role list was empty");
             return null;
         }
         List<String> rolesAsStrings = new ArrayList();

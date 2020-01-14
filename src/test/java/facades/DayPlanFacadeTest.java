@@ -95,6 +95,4 @@ public class DayPlanFacadeTest {
         });
         DayPlan dayPlanCorrect01 = new DayPlan("I can be instantiated", "SaTURDaY");
     }
-    
-   
 }

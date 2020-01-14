@@ -1,7 +1,6 @@
 package rest;
 
 import dto.DayPlanDTO;
-import dto.PersonDTO;
 import entities.DayPlan;
 import entities.User;
 import facades.MultiFacade;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -35,12 +33,12 @@ import utils.EMF_Creator;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "teamone-ca3",
+                title = "3rdSemExam",
                 version = "0.1",
-                description = "Backend of the CA3 project"
+                description = "Backend of the 3rdSemExam project"
         ),
         tags = {
-            @Tag(name = "Star Wars resource", description = "API related to the Star Wars fetch from distant API's")
+            @Tag(name = "Day Plan resource", description = "API related to Day Plans")
         },
         servers = {
             @Server(
@@ -80,45 +78,46 @@ public class DayPlanResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("{id}")
+    @Path("/{id}")
     // @RolesAllowed({"user", "admin"})
-    @Operation(summary = "Fetches data from distant Star Wars API's by id",
+    @Operation(summary = "Day Plan By ID",
             tags = {"Day Plan Resource"},
             responses = {
                 @ApiResponse(
-                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonDTO.class))),
+                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = DayPlanDTO.class))),
                 @ApiResponse(responseCode = "200", description = "The requested resources was returned"),
                 @ApiResponse(responseCode = "400", description = "The server cannot or will not process the request and no resources were returned")})
     public DayPlanDTO getRest(@PathParam("id") int id) throws IOException, InterruptedException, ExecutionException {
-        return new DayPlanDTO(((DayPlan) DAYPLAN_FACADE.find(id)));
+        return new DayPlanDTO(((DayPlan) DAYPLAN_FACADE.find((long)(int)id)));
     }
 
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Fetches all DayPlan components from hardware data",
-            tags = {"DayPlan Resource"},
+    @Operation(summary = "All Day Plans",
+            tags = {"Day Plan  Resource"},
             responses = {
                 @ApiResponse(
                         content = @Content(mediaType = "application/json", schema = @Schema(implementation = DayPlanDTO.class))),
                 @ApiResponse(responseCode = "200", description = "The requested DayPlan resources were returned"),
                 @ApiResponse(responseCode = "400", description = "The server cannot or will not process the request and no resources were returned")})
-    public List<DayPlanDTO> getAllRest() {
-        return (List<DayPlanDTO>) DAYPLAN_FACADE.findAll()
-                .stream()
-                .map(dayPlan -> new DayPlanDTO((DayPlan) dayPlan))
-                .collect(Collectors.toList());
+    public List<DayPlanDTO> getAllRest() throws IOException, InterruptedException, ExecutionException {
+        List<DayPlanDTO> dpDTOList = new ArrayList<>();
+        for (Object dp : DAYPLAN_FACADE.findAll()){
+            dpDTOList.add(new DayPlanDTO(((DayPlan)dp)));
+        }
+        return dpDTOList;
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("create")
-    @Operation(summary = "Creates a Day Plan and persists it to the database",
+  //  @Path("/create")
+    @Operation(summary = "Day Plan Creation",
             tags = {"Day Plan Resource"},
             responses = {
                 @ApiResponse(
-                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = DayPlanDTO.class))),
                 @ApiResponse(responseCode = "200", description = "The person was created and persisted"),
                 @ApiResponse(responseCode = "400", description = "No users was created or persisted")})
     public void createRest(DayPlan entity) {
@@ -129,7 +128,7 @@ public class DayPlanResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     // @RolesAllowed("admin")
-    @Operation(summary = "DayPlan Deletion", tags = {"DayPlan Resource"},
+    @Operation(summary = "DayPlan Deletion", tags = {"Day Plan  Resource"},
             responses = {
                 @ApiResponse(responseCode = "200", description = "DayPlan Deleted"),
                 @ApiResponse(responseCode = "400", description = "Not all arguments provided to delete")
@@ -142,7 +141,7 @@ public class DayPlanResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     //@RolesAllowed("admin")
-    @Operation(summary = "DayPlan Editing", tags = {"DayPlan Resource"},
+    @Operation(summary = "DayPlan Editing", tags = {"Day Plan  Resource"},
             responses = {
                 @ApiResponse(responseCode = "200", description = "DayPlan Edited"),
                 @ApiResponse(responseCode = "400", description = "Not all arguments provided with the body to edit")

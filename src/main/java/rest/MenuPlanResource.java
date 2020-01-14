@@ -1,7 +1,6 @@
 package rest;
 
 import dto.MenuPlanDTO;
-import dto.PersonDTO;
 import entities.MenuPlan;
 import entities.User;
 import facades.MultiFacade;
@@ -34,12 +33,12 @@ import utils.EMF_Creator;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "teamone-ca3",
+                title = "3rdSemExam",
                 version = "0.1",
-                description = "Backend of the CA3 project"
+                description = "Backend of the 3rdSemExam"
         ),
         tags = {
-            @Tag(name = "Star Wars resource", description = "API related to the Star Wars fetch from distant API's")
+            @Tag(name = "Menu Plan resource", description = "API related to Menu Plans")
         },
         servers = {
             @Server(
@@ -81,11 +80,11 @@ public class MenuPlanResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
     // @RolesAllowed({"user", "admin"})
-    @Operation(summary = "Fetches data from distant Star Wars API's by id",
+    @Operation(summary = "Menu Plan By ID",
             tags = {"Menu Plan Resource"},
             responses = {
                 @ApiResponse(
-                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonDTO.class))),
+                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = MenuPlanDTO.class))),
                 @ApiResponse(responseCode = "200", description = "The requested resources was returned"),
                 @ApiResponse(responseCode = "400", description = "The server cannot or will not process the request and no resources were returned")})
     public MenuPlanDTO getMenuPlan(@PathParam("id") int id) throws IOException, InterruptedException, ExecutionException {
@@ -95,8 +94,8 @@ public class MenuPlanResource {
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Fetches all MenuPlan components from hardware data",
-            tags = {"MenuPlan Resource"},
+    @Operation(summary = "All Menu Plans",
+            tags = {"Menu Plan Resource"},
             responses = {
                 @ApiResponse(
                         content = @Content(mediaType = "application/json", schema = @Schema(implementation = MenuPlanDTO.class))),
@@ -112,12 +111,11 @@ public class MenuPlanResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("create")
-    @Operation(summary = "Creates a Menu Plan and persists it to the database",
+    @Operation(summary = "Menu Plan Creation",
             tags = {"Menu Plan Resource"},
             responses = {
                 @ApiResponse(
-                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = MenuPlanDTO.class))),
                 @ApiResponse(responseCode = "200", description = "The person was created and persisted"),
                 @ApiResponse(responseCode = "400", description = "No users was created or persisted")})
     public void createMenuPlan(MenuPlan entity) {
@@ -128,7 +126,7 @@ public class MenuPlanResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     // @RolesAllowed("admin")
-    @Operation(summary = "MenuPlan Deletion", tags = {"MenuPlan Resource"},
+    @Operation(summary = "MenuPlan Deletion", tags = {"Menu Plan Resource"},
             responses = {
                 @ApiResponse(responseCode = "200", description = "MenuPlan Deleted"),
                 @ApiResponse(responseCode = "400", description = "Not all arguments provided to delete")
@@ -141,7 +139,7 @@ public class MenuPlanResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     //@RolesAllowed("admin")
-    @Operation(summary = "MenuPlan Editing", tags = {"MenuPlan Resource"},
+    @Operation(summary = "MenuPlan Editing", tags = {"Menu Plan Resource"},
             responses = {
                 @ApiResponse(responseCode = "200", description = "MenuPlan Edited"),
                 @ApiResponse(responseCode = "400", description = "Not all arguments provided with the body to edit")

@@ -15,7 +15,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Schema(name="Roles")
-
 @Entity
 @Table(name = "roles")
 public class Role implements Serializable {

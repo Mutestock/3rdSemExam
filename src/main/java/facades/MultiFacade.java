@@ -33,7 +33,7 @@ public class MultiFacade<T> extends AbstractFacade {
     }
 
     @Override
-    protected EntityManager getEntityManager() {
+    public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
